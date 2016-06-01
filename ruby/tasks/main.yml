@@ -1,0 +1,40 @@
+---
+- name: install rbenv to {{rbenv_root}}
+  git: repo=https://github.com/sstephenson/rbenv.git dest={{rbenv_root}} force=yes
+
+- name: install ruby-build
+  git: repo=https://github.com/sstephenson/ruby-build.git dest={{rbenv_root}}/plugins/ruby-build force=yes
+
+- name: install ruby-build dependencies
+  yum: name={{item}} state=latest enablerepo=epel
+  with_items:
+      - "{{default_ruby_dependencies|union(ruby_dependencies)}}"
+
+- name: install ruby
+  shell: "{{rbenv_root}}/bin/rbenv install {{ruby_version}} -f creates={{rbenv_root}}/versions/{{ruby_version}}/bin/ruby"
+  environment:
+    HOME: "{{app_home}}/"
+    RBENV_ROOT: "{{rbenv_root}}"
+
+- name: set ruby version as default
+  shell: "{{rbenv_root}}/bin/rbenv local {{ruby_version}} chdir={{app_home}}"
+  environment:
+    HOME: "{{app_home}}/"
+    RBENV_ROOT: "{{rbenv_root}}"
+
+- name: create lib dir
+  file: path={{rbenv_root}}/versions/{{ruby_version}}/lib/ state=directory mode="u=rwx,g=rwxs,o=rx"
+
+- name: rbenv rehash
+  shell: "{{rbenv_root}}/bin/rbenv rehash"
+  environment:
+    HOME: "{{app_home}}/"
+    RBENV_ROOT: "{{rbenv_root}}"
+
+- name: export vars for use in process management role
+  set_fact:
+    ruby_path: "{{rbenv_root}}/shims:{{rbenv_root}}/bin:/usr/local/bin:/usr/bin:/bin"
+    rbenv_root: "{{rbenv_root}}"
+
+- name: echo
+  debug: msg="{{name}} Ruby env {{ ruby_version }} is ready to go!"

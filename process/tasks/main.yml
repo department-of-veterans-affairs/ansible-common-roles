@@ -1,0 +1,33 @@
+---
+- name: write {{ name }} environment file if not specified
+  template: src=templates/env.sh dest={{app_home}}/{{name}}_env.sh mode="ug=rw,o=r"
+  when: env_file is undefined or environment_variables is defined
+
+- name: define {{ name }} env_file if not specified
+  set_fact:
+    env_file: "{{ app_home }}/{{ name }}_env.sh"
+  when: env_file is undefined or environment_variables is defined
+
+- name: copy dynamic ec2 environment script
+  copy: src=files/ec2_tags_to_env.sh dest={{ app_home }}/ec2_tags_to_env.sh mode="ugo=rx"
+  when: is_aws is defined
+
+- name: define stdout/err redirect if not specified
+  set_fact:
+    stdout_redirect: "{{ app_home }}/{{ name }}.out"
+  when: stdout_redirect is not defined
+
+- name: create application group
+  group: name={{ group }} state=present system=yes
+
+- name: create application user
+  user: name={{ user }} group={{ group }}
+
+- name: set owner of application root
+  file: path={{app_home}} owner={{user}} group={{group}}  recurse=yes mode="g+w"
+
+- name: copy upstart script
+  template: src=templates/upstart.conf dest=/etc/init/{{name}}.conf owner=root group=root mode="ug=rw,o=r"
+
+- name: echo
+  debug: msg="{{name}} installed! run 'sudo status {{name}}'"

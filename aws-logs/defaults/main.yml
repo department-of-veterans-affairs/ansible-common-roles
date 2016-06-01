@@ -1,0 +1,4 @@
+region: us-east-1
+watched_logs:
+  - { path: /var/log/messages, datetime_format: "%b %d %H:%M:%S" }
+log_group_name: "{{ name }}"

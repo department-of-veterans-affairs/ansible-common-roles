@@ -1,0 +1,36 @@
+---
+- name: upgrade all packages
+  yum: name=* state=latest
+  when: skip_update is undefined
+
+- name: install RHEL's Extra Package Repository (epel)
+  yum: name=epel-release state=latest
+
+- name: install git
+  yum: name=git state=present
+
+- name: set timezone
+  file: src=/usr/share/zoneinfo/America/New_York dest=/etc/localtime owner=root group=root state=link force=true
+
+- name: install Network Time Protocol (NTP) daemon
+  yum: name=ntp state=latest
+
+- name: start NTP service
+  service: name=ntpd state=started enabled=true
+
+- name: install selinux bindings
+  yum: name=libselinux-python state=present
+
+- name: set ulimit
+  copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root force=true
+
+- name: add users
+  user: name={{item.key}} state=present groups=wheel
+  with_dict: "{{users}}"
+
+- name: add user keys
+  authorized_key: user={{ item.key }} key={{ item.value }}
+  with_dict: "{{ users }}"
+
+- name: echo
+  debug: msg="{{name}} base OS is ready to go!"

@@ -1,0 +1,20 @@
+# puma defaults
+min_threads: 8
+max_threads: 32
+
+# workers in addition to master process; set this to the number of cores-1
+# NOTE: values > 1 not supported in jruby environments
+num_workers: 1
+
+worker_timeout_seconds: 60
+
+# bundle defaults
+bundle_all_envs:
+  - test
+  - development
+  - staging
+  - production
+bundle_specified_envs:
+  - development
+  - staging
+  - production

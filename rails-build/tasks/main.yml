@@ -1,0 +1,56 @@
+- name: install bundle
+  shell: "{{rbenv_root}}/shims/gem install bundler"
+  args:
+    chdir: "{{app_src}}"
+  environment:
+    HOME: "{{app_home}}"
+    RBENV_ROOT: "{{rbenv_root}}"
+
+- name: determine excluded rails envs
+  set_fact:
+    bundle_excluded_envs: "{{ bundle_all_envs | difference(bundle_specified_envs) }}"
+
+- name: bundle install
+  shell: bundle install --path=vendor/bundle/ --without="{{ bundle_excluded_envs | join(' ') }}"
+  args:
+    chdir: "{{app_src}}"
+  environment:
+    RBENV_ROOT: "{{rbenv_root}}"
+    PATH: "{{ruby_path}}"
+
+- name: precompile rails assets
+  shell: "bin/rake assets:precompile"
+  args:
+    chdir: "{{app_src}}"
+  environment:
+
+    # assets should always be precompiled with RAILS_ENV=production;
+    # NOTE: if caller omits produciton from bundle_specified_envs, this can
+    # fail due to missing gems
+    RAILS_ENV: production
+    RBENV_ROOT: "{{rbenv_root}}"
+    PATH: "{{ruby_path}}"
+
+- name: run migrations if specified
+  shell: "bin/rake db:migrate"
+  args:
+    chdir: "{{app_src }}"
+  environment:
+    RAILS_ENV: "{{ item }}"
+    RBENV_ROOT: "{{ rbenv_root }}"
+    PATH: "{{ ruby_path }}"
+  with_items: "{{ run_migrations_envs }}"
+  when: run_migrations_envs is defined
+
+- name: write puma config
+  template: src=templates/puma.rb dest={{app_src}}/config/puma.rb mode="ug=rw,o=r"
+
+- name: ensure tmp/pids exists
+  file: path={{app_src}}/tmp/pids state=directory mode="ug=rwx,o=rx"
+
+- name: get timestamp
+  shell: "TZ=America/New_York date"
+  register: date
+
+- name: write build-version.yml
+  template: src=templates/build-version.yml dest={{app_src}}/config/build-version.yml mode="ug=rw,o=r"

@@ -1,0 +1,7 @@
+- name: read ruby version
+  shell: cat {{app_src}}/.ruby-version
+  register: rbenv_ver
+
+- set_fact:
+    ruby_version: "{{ rbenv_ver.stdout }}"
+  when: rbenv_ver.stderr == ""

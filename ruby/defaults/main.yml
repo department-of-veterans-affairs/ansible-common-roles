@@ -1,0 +1,12 @@
+ruby_version: 2.2.4
+
+# beware that ansible < 2.0 will skip the whole list if the first dependency is present
+# https://github.com/ansible/ansible-modules-core/issues/843
+default_ruby_dependencies:
+  - gcc-c++
+  - openssl-devel
+  - readline-devel
+  - zlib-devel
+  - sqlite-devel
+ruby_dependencies: []
+rbenv_root: "{{app_home}}/.rbenv"

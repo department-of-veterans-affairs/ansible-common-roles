@@ -1,0 +1,11 @@
+- name: install awslogs agent
+  yum: name=awslogs state=latest
+
+- name: enable awslogs on boot
+  service: name=awslogs enabled=true
+
+- name: configure awslogs
+  template: src=templates/awscli.conf dest=/etc/awslogs/awscli.conf mode=go=r,u=rw
+
+- name: configure watched log files
+  template: src=templates/awslogs.conf dest=/etc/awslogs/awslogs.conf mode=go=r,u=rw

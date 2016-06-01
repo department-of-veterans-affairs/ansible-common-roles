@@ -1,0 +1,13 @@
+upstart_command: >
+  {{app_src}}/bin/bundle exec puma
+  --dir {{app_src}}
+  --config {{app_src}}/config/puma.rb
+
+app_environment: {}
+
+rails_env: development
+
+default_app_environment:
+  RAILS_ENV: "{{ rails_env }}"
+  PATH: "{{ ruby_path }}"
+  RBENV_ROOT: "{{ rbenv_root }}"

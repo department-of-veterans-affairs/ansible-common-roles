@@ -1,0 +1,4 @@
+# a dictionary mapping usernames to their public key file, e.g.,
+# users:
+#  - ori: public_keys/ori_rsa.pub
+users: {}

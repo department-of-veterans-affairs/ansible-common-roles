@@ -1,0 +1,7 @@
+---
+- name: clone git source for {{name}}
+  git: repo={{git.url}} dest={{dest}} accept_hostkey={{git.accept_hostkey|default(true)}} force=yes version={{git.version|default('HEAD')}}
+  register: repo
+
+- name: echo
+  debug: msg="checked out {{name}} {{repo.after}}"
