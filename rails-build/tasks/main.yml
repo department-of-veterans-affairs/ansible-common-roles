@@ -52,5 +52,5 @@
   shell: "TZ=America/New_York date"
   register: date
 
-- name: write build-version.yml
-  template: src=templates/build-version.yml dest={{app_src}}/config/build-version.yml mode="ug=rw,o=r"
+- name: write build_version.yml
+  template: src=templates/build_version.yml dest={{app_src}}/config/build_version.yml mode="ug=rw,o=r"
