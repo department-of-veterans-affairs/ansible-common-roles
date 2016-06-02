@@ -16,5 +16,5 @@ export {{ item[0] }}="{{ item[1] }}"
 {% if environment_script is defined %}
 
 # app-specific environment script
-{{ environment_script }}
+{% include environment_script with context %}
 {% endif %}
