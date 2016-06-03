@@ -12,7 +12,7 @@
     instance_tags: "{{ instance_tags|combine(default_tags) }}"
     instance_profile_name: "{{ instance_role|default('') }}"
     wait: yes
-    assign_public_ip: yes
+    assign_public_ip: no
   register: ec2
 
 - name: Wait for instance to boot
