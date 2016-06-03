@@ -3,7 +3,7 @@ timestamp: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_
 ami_id: ami-d0f506b0
 ami_user: ec2-user
 instance_type: t2.medium
-instance_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}-{{ timestamp }}"
+instance_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}_ami-{{ timestamp }}"
 
 default_tags:
     Name: "{{ instance_name }}"

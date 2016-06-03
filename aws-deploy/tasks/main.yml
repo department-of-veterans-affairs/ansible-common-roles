@@ -1,0 +1,10 @@
+- name: create launch configuration
+  ec2_lc:
+    region: "{{ region }}"
+    name: "{{ launch_config_name }}"
+    image_id: "{{ image_id }}"
+    key_name: "{{ keypair }}"
+    instance_type: "{{ instance_type }}"
+    security_groups: "{{ security_groups }}"
+    instance_monitoring: yes
+  

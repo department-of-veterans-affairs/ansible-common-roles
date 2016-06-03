@@ -1,0 +1,2 @@
+timestamp: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}"
+launch_config_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}-{{ timestamp }}"
