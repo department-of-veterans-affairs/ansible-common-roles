@@ -16,5 +16,3 @@
     instance_ids:
       - "{{ ec2_instance.id }}"
     region: "{{ ec2_instance.region }}"
-
-# TODO: create ASG from ami_id
