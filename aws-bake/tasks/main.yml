@@ -1,13 +1,11 @@
 - name: Create AMI
   ec2_ami:
-    region: "{{ item.region }}"
-    instance_id: "{{ item.id }}"
-    name: "{{ item.tags['Name'] }}"
+    region: "{{ ec2_instance.region }}"
+    instance_id: "{{ ec2_instance.id }}"
+    name: "{{ ec2_instance.tags['Name'] }}"
     wait: yes
     state: present
-  with_items: "{{ ec2_instances }}"
   register: ami
-  no_log: true
 
 - name: echo
   debug: msg="{{ ami.image_id }} registered"
@@ -16,11 +14,7 @@
   ec2:
     state: absent
     instance_ids:
-      - "{{ item.id }}"
-    region: "{{ item.region }}"
-
-  # can't use the jinja map(attribute=) filter, requires new jinja
-  with_items: "{{ ec2_instances }}"
-  no_log: true
+      - "{{ ec2_instance.id }}"
+    region: "{{ ec2_instance.region }}"
 
 # TODO: create ASG from ami_id
