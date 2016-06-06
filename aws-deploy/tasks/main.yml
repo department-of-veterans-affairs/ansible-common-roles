@@ -7,6 +7,7 @@
     instance_type: "{{ instance_type }}"
     security_groups: "{{ security_groups }}"
     instance_monitoring: yes
+    instance_profile_name: "{{ instance_profile_name }}"
 
 - name: Configure Auto Scaling Group and perform rolling deploy
   ec2_asg:
