@@ -7,4 +7,17 @@
     instance_type: "{{ instance_type }}"
     security_groups: "{{ security_groups }}"
     instance_monitoring: yes
-  
+
+- name: Configure Auto Scaling Group and perform rolling deploy
+  ec2_asg:
+    region: "{{ region }}"
+    name: "{{ auto_scaling_group_name }}"
+    launch_config_name: "{{ launch_config_name }}"
+    health_check_type: ELB
+    health_check_period: 300
+    desired_capacity: "{{ asg_properties.DesiredCapacity | default(2) }}"
+    replace_all_instances: yes
+    replace_batch_size: "{{ (asg_properties.DesiredCapacity | default(2) / 4) | round(0, 'ceil') | int }}"
+    load_balancers: "{{ elb_names }}"
+    state: present
+  register: asg_result
