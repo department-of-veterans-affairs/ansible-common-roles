@@ -17,7 +17,7 @@
     health_check_period: 300
     desired_capacity: "{{ desired_capacity | default(2) }}"
     replace_all_instances: yes
-    replace_batch_size: "{{ (replace_batch_size | default(1) }}"
+    replace_batch_size: "{{ replace_batch_size | default(1) }}"
     load_balancers: "{{ elb_names }}"
     state: present
   register: asg_result
