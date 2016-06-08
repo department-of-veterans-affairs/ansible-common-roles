@@ -11,7 +11,7 @@
     bundle_excluded_envs: "{{ bundle_all_envs | difference(bundle_specified_envs) }}"
 
 - name: bundle install
-  shell: bundle install --path=vendor/bundle/ --without="{{ bundle_excluded_envs | join(' ') }}"
+  shell: bundle install --deployment --path=vendor/bundle/ --without="{{ bundle_excluded_envs | join(' ') }}"
   args:
     chdir: "{{app_src}}"
   environment:
