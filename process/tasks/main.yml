@@ -21,7 +21,7 @@
   group: name={{ group }} state=present system=yes
 
 - name: create application user
-  user: name={{ user }} group={{ group }}
+  user: name={{ user }} group={{ group }} system=yes shell=/bin/false home={{ app_home }}
 
 - name: set owner of application root
   file: path={{app_home}} owner={{user}} group={{group}}  recurse=yes mode="g+w"
