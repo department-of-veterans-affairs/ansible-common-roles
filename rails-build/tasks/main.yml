@@ -39,8 +39,7 @@
     RAILS_ENV: "{{ item }}"
     RBENV_ROOT: "{{ rbenv_root }}"
     PATH: "{{ ruby_path }}"
-  with_items: "{{ run_migrations_envs }}"
-  when: run_migrations_envs is defined
+  with_items: "{{ run_migrations_envs| default([]) }}"
 
 - name: write puma config
   template: src=templates/puma.rb dest={{app_src}}/config/puma.rb mode="ug=rw,o=r"
