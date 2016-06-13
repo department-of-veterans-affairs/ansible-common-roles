@@ -5,6 +5,7 @@
     name: "{{ ec2_instance.tags['Name'] }}"
     wait: yes
     state: present
+    device_mapping: "{{ device_mapping|default([]) }}"
   register: ami
 
 - name: echo
