@@ -17,6 +17,8 @@
     health_check_type: ELB
     health_check_period: 300
     desired_capacity: "{{ desired_capacity | default(2) }}"
+    min_size: "{{ min_size | default(2) }}"
+    max_size: "{{ max_size | default(2) }}"
     replace_all_instances: yes
     replace_batch_size: "{{ replace_batch_size | default(1) }}"
     state: present
