@@ -12,11 +12,6 @@
   copy: src=files/ec2_tags_to_env.sh dest={{ app_home }}/ec2_tags_to_env.sh mode="ugo=rx"
   when: is_aws is defined
 
-- name: define stdout/err redirect if not specified
-  set_fact:
-    stdout_redirect: "{{ app_home }}/{{ name }}.out"
-  when: stdout_redirect is not defined
-
 - name: create application group
   group: name={{ group }} state=present system=yes
 
