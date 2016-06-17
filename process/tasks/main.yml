@@ -12,11 +12,6 @@
   copy: src=files/ec2_tags_to_env.sh dest={{ app_home }}/ec2_tags_to_env.sh mode="ugo=rx"
   when: is_aws is defined
 
-- name: define stdout/err redirect if not specified
-  set_fact:
-    stdout_redirect: "{{ app_home }}/{{ name }}.out"
-  when: stdout_redirect is not defined
-
 - name: create application group
   group: name={{ group }} state=present system=yes
 
@@ -24,7 +19,7 @@
   user: name={{ user }} group={{ group }} system=yes shell=/bin/false home={{ app_home }}
 
 - name: set owner of application root
-  file: path={{app_home}} owner={{user}} group={{group}}  recurse=yes mode="g+w"
+  file: path={{app_home}} owner={{user}} group={{group}}  recurse=yes mode="g+rwx"
 
 - name: copy upstart script
   template: src=templates/upstart.conf dest=/etc/init/{{name}}.conf owner=root group=root mode="ug=rw,o=r"
