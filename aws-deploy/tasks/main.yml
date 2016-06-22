@@ -11,15 +11,18 @@
 
 - name: Configure Auto Scaling Group and perform rolling deploy
   ec2_asg:
-    region: "{{ region }}"
-    name: "{{ auto_scaling_group_name }}"
-    launch_config_name: "{{ launch_config_name }}"
-    health_check_type: ELB
-    health_check_period: 300
     desired_capacity: "{{ desired_capacity | default(2) }}"
-    min_size: "{{ min_size | default(2) }}"
+    health_check_period: 300
+    health_check_type: ELB
+    launch_config_name: "{{ launch_config_name }}"
+    load_balancers: "{{ app_loadbalancers }}"
     max_size: "{{ max_size | default(2) }}"
+    min_size: "{{ min_size | default(2) }}"
+    name: "{{ auto_scaling_group_name }}"
+    region: "{{ region }}"
     replace_all_instances: yes
     replace_batch_size: "{{ replace_batch_size | default(1) }}"
     state: present
+    tags: "{{ app_tags | default(null) }}"
+    vpc_zone_identifier: "{{ app_subnets | default(null) }}"
   register: asg_result
