@@ -15,7 +15,7 @@
     health_check_period: 300
     health_check_type: ELB
     launch_config_name: "{{ launch_config_name }}"
-    load_balancers: "{{ app_loadbalancers | default(null) }}"
+    load_balancers: "{{ app_loadbalancers | default(None) or omit }}"
     max_size: "{{ max_size | default(2) }}"
     min_size: "{{ min_size | default(2) }}"
     name: "{{ auto_scaling_group_name }}"
@@ -23,6 +23,6 @@
     replace_all_instances: yes
     replace_batch_size: "{{ replace_batch_size | default(1) }}"
     state: present
-    tags: "{{ app_tags | default(null) }}"
-    vpc_zone_identifier: "{{ app_subnets | default(null) }}"
+    tags: "{{ app_tags | default(None) or omit }}"
+    vpc_zone_identifier: "{{ app_subnets | default(None) or omit }}"
   register: asg_result
