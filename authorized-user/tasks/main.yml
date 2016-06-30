@@ -1,0 +1,9 @@
+- name: add {{ user }} user
+  user: name={{ user }} state=present
+
+- name: make {{ user }} sudo
+  template: src=sudoers dest=/etc/sudoers.d/{{ user }} owner=root group=root mode=0440 validate='visudo -cf %s'
+  when: sudoer
+
+- name: add authorized ssh key
+  authorized_key: user={{ user }} key={{ public_key }}
