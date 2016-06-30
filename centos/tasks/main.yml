@@ -24,13 +24,5 @@
 - name: set ulimit
   copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root force=true
 
-- name: add users
-  user: name={{item.key}} state=present groups=wheel
-  with_dict: "{{users}}"
-
-- name: add user keys
-  authorized_key: user={{ item.key }} key={{ item.value }}
-  with_dict: "{{ users }}"
-
 - name: echo
-  debug: msg="{{name}} base OS is ready to go!"
+  debug: msg="{{ name }} base OS is ready to go!"
