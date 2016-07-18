@@ -5,5 +5,5 @@ dependencies:
   - { role: ruby-version-lookup }
   - { role: ruby }
   - { role: rails-build }
-  - { role: process, environment_variables: "{{ default_app_environment|combine(app_environment) }}", stdout_redirect: "{{ app_src }}/log/{{ name }}.out" }
+  - { role: process, environment_variables: "{{ default_app_environment | combine(app_environment | default({})) }}", stdout_redirect: "{{ app_src }}/log/{{ name }}.out" }
   - { role: roadrunner-aws, when: is_aws is defined }

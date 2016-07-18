@@ -3,11 +3,7 @@ upstart_command: >
   --dir {{app_src}}
   --config {{app_src}}/config/puma.rb
 
-app_environment: {}
-
-rails_env: development
-
 default_app_environment:
-  RAILS_ENV: "{{ rails_env }}"
+  RAILS_ENV: "{{ rails_env | default('development') }}"
   PATH: "{{ ruby_path }}"
   RBENV_ROOT: "{{ rbenv_root }}"
