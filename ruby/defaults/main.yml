@@ -8,5 +8,4 @@ default_ruby_dependencies:
   - readline-devel
   - zlib-devel
   - sqlite-devel
-ruby_dependencies: []
 rbenv_root: "{{app_home}}/.rbenv"

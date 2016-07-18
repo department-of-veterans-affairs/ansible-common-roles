@@ -8,13 +8,14 @@
 - name: install ruby-build dependencies
   yum: name={{item}} state=latest enablerepo=epel
   with_items:
-      - "{{default_ruby_dependencies|union(ruby_dependencies)}}"
+      - "{{default_ruby_dependencies|union(ruby_dependencies|default([]))}}"
 
 - name: install ruby
   shell: "{{rbenv_root}}/bin/rbenv install {{ruby_version}} -f creates={{rbenv_root}}/versions/{{ruby_version}}/bin/ruby"
   environment:
     HOME: "{{app_home}}/"
     RBENV_ROOT: "{{rbenv_root}}"
+  when: skip_ruby is undefined
 
 - name: set ruby version as default
   shell: "{{rbenv_root}}/bin/rbenv local {{ruby_version}} chdir={{app_home}}"
