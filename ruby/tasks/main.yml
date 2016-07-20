@@ -9,6 +9,7 @@
   yum: name={{item}} state=latest enablerepo=epel
   with_items:
       - "{{default_ruby_dependencies|union(ruby_dependencies|default([]))}}"
+  when: skip_ruby is undefined
 
 - name: install ruby
   shell: "{{rbenv_root}}/bin/rbenv install {{ruby_version}} -f creates={{rbenv_root}}/versions/{{ruby_version}}/bin/ruby"

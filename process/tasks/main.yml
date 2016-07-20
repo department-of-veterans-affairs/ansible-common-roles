@@ -20,6 +20,7 @@
 
 - name: set owner of application root
   file: path={{app_home}} owner={{user}} group={{group}}  recurse=yes mode="g+rwx"
+  when: skip_update is undefined
 
 - name: copy upstart script
   template: src=templates/upstart.conf dest=/etc/init/{{name}}.conf owner=root group=root mode="ug=rw,o=r"
