@@ -1,4 +1,4 @@
-{% if is_aws is defined %}
+{% if is_aws is defined and dynamic_tags is defined %}
 # convert ec2 tags to env.sh file
 {{ app_home }}/ec2_tags_to_env.sh {{ app_home }}/{{ name }}_dynamic_env.sh
 

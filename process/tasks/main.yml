@@ -10,7 +10,7 @@
 
 - name: copy dynamic ec2 environment script
   copy: src=files/ec2_tags_to_env.sh dest={{ app_home }}/ec2_tags_to_env.sh mode="ugo=rx"
-  when: is_aws is defined
+  when: is_aws is defined and dynamic_tags is defined
 
 - name: create application group
   group: name={{ group }} state=present system=yes
