@@ -25,4 +25,5 @@
     state: present
     tags: "{{ app_tags | default(None) or omit }}"
     vpc_zone_identifier: "{{ app_subnets | default(None) or omit }}"
+    wait_timeout: "{{ wait_timeout | default(480) }}"
   register: asg_result
