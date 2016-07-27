@@ -22,6 +22,17 @@
 - name: install selinux bindings
   yum: name=libselinux-python state=present
 
+- name: install yum-cron
+  yum: name=yum-cron state=latest
+
+- name: configure yum-cron for security updates
+  lineinfile: dest=/etc/yum/yum-cron.conf regexp=update_cmd line='update_cmd = security'
+  when: skip_update is undefined
+
+- name: configure yum-cron to automatically apply updates.
+  lineinfile: dest=/etc/yum/yum-cron.conf regexp=apply_updates line='apply_updates = yes'
+  when: skip_update is undefined
+
 - name: set ulimit
   copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root force=true
 
