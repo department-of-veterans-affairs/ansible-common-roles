@@ -33,16 +33,6 @@
     PATH: "{{ruby_path}}"
   when: skip_ruby is undefined
 
-- name: run migrations if specified
-  shell: "bin/rake db:migrate"
-  args:
-    chdir: "{{app_src }}"
-  environment:
-    RAILS_ENV: "{{ item }}"
-    RBENV_ROOT: "{{ rbenv_root }}"
-    PATH: "{{ ruby_path }}"
-  with_items: "{{ run_migrations_envs| default([]) }}"
-
 - name: write puma config
   template: src=templates/puma.rb dest={{app_src}}/config/puma.rb mode="ug=rw,o=r"
 
