@@ -10,13 +10,17 @@
   set_fact:
     bundle_excluded_envs: "{{ bundle_all_envs | difference(bundle_specified_envs) }}"
 
+- name: define default bundle env
+  set_fact:
+    default_bundle_environment:
+      RBENV_ROOT: "{{rbenv_root}}"
+      PATH: "{{ruby_path}}"
+
 - name: bundle install
   shell: bundle install --deployment --path=vendor/bundle/ --without="{{ bundle_excluded_envs | join(' ') }}"
   args:
     chdir: "{{app_src}}"
-  environment:
-    RBENV_ROOT: "{{rbenv_root}}"
-    PATH: "{{ruby_path}}"
+  environment: "{{ default_bundle_environment | combine( bundle_environment | default({}) )}}"
   when: skip_ruby is undefined
 
 - name: precompile rails assets
