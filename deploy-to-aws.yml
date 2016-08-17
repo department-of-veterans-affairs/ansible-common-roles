@@ -86,6 +86,7 @@
           volume_type: gp2
           delete_on_termination: true
 
+      launch_config_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}-{{ deploy_env }}-{{ timestamp }}"
       auto_scaling_group_name: "{{ app_config[app_name][deploy_env].auto_scaling_group_name }}"
 
       desired_capacity: "{{ app_config[app_name][deploy_env].auto_scaling_desired | default(1) }}"
