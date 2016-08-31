@@ -15,6 +15,7 @@
 
 - name: install Network Time Protocol (NTP) daemon
   yum: name=ntp state=latest
+  when: skip_update is undefined
 
 - name: start NTP service
   service: name=ntpd state=started enabled=true
@@ -24,6 +25,7 @@
 
 - name: install yum-cron
   yum: name=yum-cron state=latest
+  when: skip_update is undefined
 
 - name: configure yum-cron for security updates
   lineinfile: dest=/etc/yum/yum-cron.conf regexp=update_cmd line='update_cmd = security'
