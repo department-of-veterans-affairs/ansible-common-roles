@@ -5,5 +5,10 @@
   template: src=sudoers dest=/etc/sudoers.d/{{ user }} owner=root group=root mode=0440 validate='visudo -cf %s'
   when: sudoer
 
-- name: add authorized ssh key
+- name: add a single authorized ssh key (optional)
   authorized_key: user={{ user }} key={{ public_key }}
+  when: public_key is defined
+
+- name: add multiple authorized ssh keys (optional)
+  authorized_key: user={{ user }} key={{ lookup('file', item) }}
+  with_fileglob: "{{ public_keys_glob | default([]) }}"
