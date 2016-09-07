@@ -41,14 +41,18 @@
     - vars/aws-config.yml
 
   roles:
-    - role: aws-launch
+    - role: aws-launch-user
+      keys_directory: "{{ launch_user_keys }}"
+      when: launch_user is defined
 
+    - role: aws-launch
       ami_id: "{{ aws_config[deploy_env].base_ami }}"
       subnet_id: "{{ aws_config[deploy_env].public_subnet }}"
       region: "{{ aws_config[deploy_env].region }}"
       keypair: "{{ aws_config[deploy_env].keypair }}"
       security_groups: "{{ [aws_config[deploy_env].ssh_security_group] | union(app_config[app_name][deploy_env].security_groups) }}"
       playbook_group: "tmp_ami_group"
+      user_data: "{{ launch_user_init_script | default(None) or omit }}"
 
 - name: deploy application to new instance
   hosts: tmp_ami_group

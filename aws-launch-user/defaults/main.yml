@@ -1,0 +1,2 @@
+launch_user: admin
+launch_user_group: "{{ launch_user }}"
