@@ -14,6 +14,7 @@
     wait: yes
     assign_public_ip: yes
     count: 1
+    user_data: "{{ user_data | default(None) or omit }}"
   register: ec2_result
 
 - name: register a single ec2 instance result (guaranteed to be 1)
