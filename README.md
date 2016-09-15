@@ -1,6 +1,6 @@
 This is a set of production-ready [Ansible](http://docs.ansible.com/) roles that automate:
 * The *configuration* of a Ruby on Rails application (see the [roadrunner](roadrunner) role)
-* The *deployment* of an application to an AWS region (see the [deploy-to-aws playbook](deploy-to-aws.yml) and [roadrunner-devops](roadrunner-devops) role).
+* The *deployment* of an application to an AWS region (see the [deploy-to-aws playbook](deploy-to-aws.yml) and [roadrunner-aws](roadrunner-aws) role).
  
 These roles are generic enough that they could be repurposed to deploy *any* application, not just RoR apps.
 
