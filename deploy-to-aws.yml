@@ -88,7 +88,7 @@
       volumes:
         - device_name: /dev/xvda
           volume_size: "{{ app_config[app_name][deploy_env].volume_size_gb | default(8) }}"
-          volume_type: gp2
+          device_type: gp2
           delete_on_termination: true
 
       launch_config_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}-{{ deploy_env }}-{{ timestamp }}"
