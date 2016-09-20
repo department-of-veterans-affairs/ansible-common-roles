@@ -11,7 +11,7 @@
   yum: name=git state=present
 
 - name: set timezone
-  file: src=/usr/share/zoneinfo/America/New_York dest=/etc/localtime owner=root group=root state=link force=true
+  file: src=/usr/share/zoneinfo/{{ timezone | default("America/New_York") }} dest=/etc/localtime owner=root group=root state=link force=true
 
 - name: install Network Time Protocol (NTP) daemon
   yum: name=ntp state=latest
