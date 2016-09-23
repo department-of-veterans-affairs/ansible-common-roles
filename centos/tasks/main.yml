@@ -9,6 +9,7 @@
 
 - name: install git
   yum: name=git state=present
+  when: skip_update is undefined
 
 - name: set timezone
   file: src=/usr/share/zoneinfo/{{ timezone | default("America/New_York") }} dest=/etc/localtime owner=root group=root state=link force=true
@@ -22,6 +23,7 @@
 
 - name: install selinux bindings
   yum: name=libselinux-python state=present
+  when: skip_update is undefined
 
 - name: install yum-cron
   yum: name=yum-cron state=latest
