@@ -44,7 +44,7 @@
   file: path={{app_src}}/tmp/pids state=directory mode="ug=rwx,o=rx"
 
 - name: get timestamp
-  shell: "TZ=America/New_York date"
+  shell: "TZ={{ timezone | default('America/New_York') }} date"
   register: date
 
 - name: write build_version.yml
