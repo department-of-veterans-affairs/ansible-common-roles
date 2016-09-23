@@ -1,7 +1,28 @@
 ---
+- name: copy private key
+  copy: content="{{ git.key_contents }}" dest=/tmp/git.pem mode=0600
+  when: git.key_contents is defined
+
+- name: set private key_file
+  set_fact:
+    git: "{{ git | combine({ 'key_file': '/tmp/git.pem' }) }}"
+  when: git.key_contents is defined
+
 - name: clone git source for {{name}}
-  git: repo={{git.url}} dest={{dest}} accept_hostkey={{git.accept_hostkey|default(true)}} force=yes version={{git.version|default('HEAD')}}
+  git:
+    repo: "{{ git.url }}"
+    dest: "{{ dest }}"
+    accept_hostkey: "{{ git.accept_hostkey | default(True) }}"
+    force: True
+    version: "{{ git.version|default('HEAD') }}"
+    key_file: "{{ git.key_file | default(None) or omit }}"
+    depth: 1
+    clone: True
   register: repo
+
+- name: delete private key
+  file: path=/tmp/git.pem state=absent
+  when: git.key_contents is defined
 
 - name: echo
   debug: msg="checked out {{name}} {{repo.after}}"
