@@ -1,0 +1,5 @@
+ami_tags:
+  git_hash: "{{ hostvars[groups['tmp_ami_group'][0]].git_hash | default('') }}"
+  environment: "{{ deploy_env }}"
+  application: "{{ app_name }}"
+

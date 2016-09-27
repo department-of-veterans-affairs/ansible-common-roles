@@ -6,6 +6,7 @@
     wait: yes
     state: present
     device_mapping: "{{ device_mapping | default(None) or omit }}"
+    tags: "{{ ami_tags }}"
   register: ami
 
 - name: echo
