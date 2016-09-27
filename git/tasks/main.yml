@@ -24,5 +24,9 @@
   file: path=/tmp/git.pem state=absent
   when: git.key_contents is defined
 
+- name: save git hash
+  set_fact: 
+    git_hash: "{{repo.after}}"
+
 - name: echo
   debug: msg="checked out {{name}} {{repo.after}}"
