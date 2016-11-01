@@ -39,4 +39,4 @@
     rbenv_root: "{{rbenv_root}}"
 
 - name: echo
-  debug: msg="{{name}} Ruby env {{ ruby_version }} is ready to go!"
+  debug: msg="Ruby env {{ ruby_version }} is ready to go!"
