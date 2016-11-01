@@ -1,22 +1,24 @@
 ---
 - name: install rbenv to {{rbenv_root}}
   git: repo=https://github.com/sstephenson/rbenv.git dest={{rbenv_root}} force=yes
+  when: ruby_preinstalled == false
 
 - name: install ruby-build
   git: repo=https://github.com/sstephenson/ruby-build.git dest={{rbenv_root}}/plugins/ruby-build force=yes
+  when: ruby_preinstalled == false
 
 - name: install ruby-build dependencies
   yum: name={{item}} state=latest enablerepo=epel
   with_items:
       - "{{default_ruby_dependencies|union(ruby_dependencies|default([]))}}"
-  when: skip_ruby is undefined
+  when: (skip_ruby is undefined) or (ruby_preinstalled == false)
 
 - name: install ruby
   shell: "{{rbenv_root}}/bin/rbenv install {{ruby_version}} -f creates={{rbenv_root}}/versions/{{ruby_version}}/bin/ruby"
   environment:
     HOME: "{{app_home}}/"
     RBENV_ROOT: "{{rbenv_root}}"
-  when: skip_ruby is undefined
+  when: (skip_ruby is undefined) or (ruby_preinstalled == false)
 
 - name: set ruby version as default
   shell: "{{rbenv_root}}/bin/rbenv local {{ruby_version}} chdir={{app_home}}"

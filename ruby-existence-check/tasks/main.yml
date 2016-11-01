@@ -1,0 +1,28 @@
+---
+# Simple script that runs "rbenv version" and look for the version
+# of Ruby that we are targeting (defined as a fact ruby_version).
+#
+# Input vars:
+#   ruby_version
+#   rbenv_root
+#
+# Side effect:
+#   ruby_preinstalled is defined and set to true if ruby is
+#   already installed
+#
+- name : check existing rbenv
+  shell: "rbenv versions | grep {{ruby_version}}  | awk '{$1=$1};1'"
+  register: found_ruby_version
+  environment:
+    RBENV_ROOT: "{{rbenv_root}}"
+    PATH: "{{rbenv_root}}/bin:{{rbenv_root}}/shims:{{ ansible_env.PATH }}"
+
+- set_fact:
+    ruby_preinstalled: true
+  when: found_ruby_version.stdout == ruby_version
+
+- set_fact:
+    ruby_preinstalled: false
+  when: found_ruby_version.stdout != ruby_version
+
+- debug: msg="Found ruby version {{ruby_version}} - {{ruby_preinstalled}}"
