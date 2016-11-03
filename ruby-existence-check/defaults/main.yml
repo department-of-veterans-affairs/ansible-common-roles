@@ -1,2 +1,7 @@
+# The default location that we look for ruby and rbenv. This is optimized for
+# AMI that has ruby pre-installed.
 rbenv_root: /opt/rbenv
+
+# fallback placeholder. This should come from the `ruby-version-lookup` role to
+# determine the apps's ruby version.
 ruby_version: 2.3.0
