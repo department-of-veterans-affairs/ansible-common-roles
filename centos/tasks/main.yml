@@ -54,4 +54,4 @@
               state=present
 
 - name: echo
-  debug: msg="{{ name }} base OS is ready to go!"
+  debug: msg="base OS is ready to go!"

@@ -8,7 +8,7 @@
     git: "{{ git | combine({ 'key_file': '/tmp/git.pem' }) }}"
   when: git.key_contents is defined
 
-- name: clone git source for {{name}}
+- name: clone git source
   git:
     repo: "{{ git.url }}"
     dest: "{{ dest }}"
@@ -25,8 +25,8 @@
   when: git.key_contents is defined
 
 - name: save git hash
-  set_fact: 
+  set_fact:
     git_hash: "{{repo.after}}"
 
 - name: echo
-  debug: msg="checked out {{name}} {{repo.after}}"
+  debug: msg="checked out {{repo.after}}"
