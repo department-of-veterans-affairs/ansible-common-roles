@@ -36,12 +36,13 @@
 - name: configure yum-cron to automatically apply updates.
   lineinfile: dest=/etc/yum/yum-cron.conf regexp=apply_updates line='apply_updates = yes'
   when: skip_update is undefined
-  
+
 - name: start yum-cron
   service:
     name: yum-cron
     state: started
     enabled: yes # start on boot
+  when: skip_update is undefined
 
 - name: set ulimit
   copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root force=true
