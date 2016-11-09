@@ -54,6 +54,7 @@
       playbook_group: "tmp_ami_group"
       user_data: "{{ launch_user_init_script | default(None) or omit }}"
       ami_user: "{{ launch_user | default(None) or omit }}"
+      instance_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}-{{ deploy_env }}_ami-{{ timestamp }}"
 
 - name: deploy application to new instance
   hosts: tmp_ami_group
