@@ -17,5 +17,16 @@ dependencies:
     environment_variables: "{{ default_app_environment | combine(app_environment | default({})) }}"
     stdout_redirect: "{{ app_src }}/log/{{ name }}.out"
 
+  - role: logrotate
+    logrotate_scripts:
+      - name: "{{ name }}"
+        path: "{{ app_src }}/log/*"
+        options:
+          - weekly
+          - size 10M
+          - rotate 7
+          - missingok
+          - copytruncate
+
   - role: roadrunner-aws
     when: is_aws is defined
