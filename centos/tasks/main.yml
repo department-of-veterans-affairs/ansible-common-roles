@@ -30,7 +30,7 @@
   when: skip_update is undefined
 
 - name: configure yum-cron for security updates
-  lineinfile: dest=/etc/yum/yum-cron.conf regexp=update_cmd line='update_cmd = security'
+  lineinfile: create=True dest=/etc/yum/yum-cron.conf regexp=update_cmd line='update_cmd = security'
   when: skip_update is undefined
 
 - name: configure yum-cron to automatically apply updates.
