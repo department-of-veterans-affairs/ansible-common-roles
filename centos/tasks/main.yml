@@ -5,29 +5,24 @@
 
 - name: install RHEL's Extra Package Repository (epel)
   yum: name=epel-release state=latest
-  when: skip_update is undefined
 
 - name: install git
   yum: name=git state=present
-  when: skip_update is undefined
 
 - name: set timezone
   file: src=/usr/share/zoneinfo/{{ timezone | default("America/New_York") }} dest=/etc/localtime owner=root group=root state=link force=true
 
 - name: install Network Time Protocol (NTP) daemon
   yum: name=ntp state=latest
-  when: skip_update is undefined
 
 - name: start NTP service
   service: name=ntpd state=started enabled=true
 
 - name: install selinux bindings
   yum: name=libselinux-python state=present
-  when: skip_update is undefined
 
 - name: install yum-cron
   yum: name=yum-cron state=latest
-  when: skip_update is undefined
 
 - name: configure yum-cron for security updates
   lineinfile: create=True dest=/etc/yum/yum-cron.conf regexp=update_cmd line='update_cmd = security'
@@ -35,14 +30,12 @@
 
 - name: configure yum-cron to automatically apply updates.
   lineinfile: dest=/etc/yum/yum-cron.conf regexp=apply_updates line='apply_updates = yes'
-  when: skip_update is undefined
 
 - name: start yum-cron
   service:
     name: yum-cron
     state: started
     enabled: yes # start on boot
-  when: skip_update is undefined
 
 - name: set ulimit
   copy: src=files/limits.conf dest=/etc/security/limits.conf owner=root group=root force=true
