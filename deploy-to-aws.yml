@@ -66,6 +66,8 @@
 
   roles:
     - role: "{{ app_config[app_name].ansible_role_name }}"
+      become: true
+      become_user: root
       is_aws: true
       region: "{{ aws_config[deploy_env].region }}"
 
