@@ -7,5 +7,3 @@ default_app_environment:
   RAILS_ENV: "{{ rails_env | default('development') }}"
   PATH: "{{ ruby_path }}"
   RBENV_ROOT: "{{ rbenv_root }}"
-
-require_nodejs: false
