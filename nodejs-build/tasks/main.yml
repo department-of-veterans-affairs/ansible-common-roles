@@ -1,0 +1,11 @@
+# Run NPM install to download all the NPM packages and webpack to run the
+# babel precompiler.
+- name: npm install
+  shell: npm install --production --no-optional
+  args:
+    chdir: "{{app_src}}/client"
+
+- name: webpack build
+  shell: npm run build:production
+  args:
+    chdir: "{{app_src}}/client"

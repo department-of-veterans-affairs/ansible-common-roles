@@ -1,0 +1,10 @@
+# fallback placeholder. This should come from the `nodejs-version-lookup` role to
+# determine the apps's preferred nodejs version.
+nodejs_version: 4.1.2
+
+# fallback placeholder. This is determined by the corresponding npm used by
+# the specific version of nodejs.
+npm_version: 2.14.4
+
+# fallback placeholder. This is determined by the nodejs-existence-check role.
+nodejs_preinstalled: false

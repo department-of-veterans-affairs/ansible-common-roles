@@ -1,0 +1,15 @@
+---
+# Install specified version of node.js into the system
+
+- name: add node.js rpm to yum
+  shell: 'curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -'
+  when: nodejs_preinstalled == false
+
+- name: install nodejs
+  yum:
+    name: "nodejs-{{ nodejs_version }}"
+  when: nodejs_preinstalled == false
+
+- name: install exact npm version
+  shell: npm i -g npm@{{ npm_version }}
+  when: nodejs_preinstalled == false
