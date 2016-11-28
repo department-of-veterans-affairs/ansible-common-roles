@@ -1,14 +1,51 @@
----
-# Install specified version of node.js into the system
+# Reads the nvmrc file to determine the preferred nodejs
+# version by the application.
+#
+# Side effect:
+#   nodejs_version set to the version string used by the application.
+#
+- name: read node version
+  shell: cat {{app_src}}/.nvmrc
+  register: nodejs_version_output
 
-# Add nodesource to RPM. Unfortunately, the URL is version dependent. When we
-# upgrade node.js, we will have to upgrade this URL as well.
+- set_fact:
+    nodejs_version: "{{ nodejs_version_output.stdout }}"
+  when: nodejs_version_output.stderr == ""
+
+
+# Simple script that runs "node --version" and look for the version
+# of Nodejs that we are targeting (defined as a fact nodejs_version).
+#
+# Input vars:
+#   nodejs_version
+#
+# Side effect:
+#   nodejs_preinstalled set to true if the desired nodejs is already installed, false otherwise
+#
+- name : check if nodejs is installed
+  shell: "node --version  | cut -c 2-"
+  register: found_nodejs_version
+
+- set_fact:
+    nodejs_preinstalled: true
+  when: found_nodejs_version.stdout == nodejs_version
+
+- set_fact:
+    nodejs_preinstalled: false
+  when: found_nodejs_version.stdout != nodejs_version
+
+- debug: msg="Found nodejs version {{nodejs_version}} - {{nodejs_preinstalled}}"
+
+
+# Install specified version of node.js into the system
 - name: add node.js rpm to yum
   shell: 'curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -'
+  when: nodejs_preinstalled == false
 
 - name: install nodejs
   yum:
     name: "nodejs-{{ nodejs_version }}"
+  when: nodejs_preinstalled == false
 
 # Disable yum from updating node.js since we are locking down this version for
 # the application.
@@ -18,6 +55,20 @@
     regexp='enabled=1'
     replace='enabled=0'
     backup=yes
+  when: nodejs_preinstalled == false
 
 - name: install exact npm version
   shell: npm i -g npm@{{ npm_version }}
+  when: nodejs_preinstalled == false
+
+# Run NPM install to download all the NPM packages and webpack to run the
+# babel precompiler.
+- name: npm install
+  shell: npm install --production --no-optional
+  args:
+    chdir: "{{app_src}}/client"
+
+- name: webpack build
+  shell: npm run build:production
+  args:
+    chdir: "{{app_src}}/client"

@@ -5,14 +5,8 @@ dependencies:
   - role: git
     dest: "{{ app_src }}"
 
-  - role: nodejs-version-lookup
-
-  - role: nodejs-existence-check
-
   - role: nodejs
-    when: nodejs_preinstalled == false
-
-  - role: nodejs-build
+    when: require_nodejs == true
 
   - role: ruby-version-lookup
 

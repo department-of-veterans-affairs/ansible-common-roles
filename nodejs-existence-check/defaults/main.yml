@@ -1,3 +1,0 @@
-# fallback placeholder. This should come from the `nodejs-version-lookup` role to
-# determine the apps's preferred nodejs version.
-nodejs_version: 4.1.2
