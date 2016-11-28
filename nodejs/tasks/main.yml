@@ -1,6 +1,8 @@
 ---
 # Install specified version of node.js into the system
 
+# Add nodesource to RPM. Unfortunately, the URL is version dependent. When we
+# upgrade node.js, we will have to upgrade this URL as well.
 - name: add node.js rpm to yum
   shell: 'curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -'
 
@@ -8,6 +10,8 @@
   yum:
     name: "nodejs-{{ nodejs_version }}"
 
+# Disable yum from updating node.js since we are locking down this version for
+# the application.
 - name: disable nodejs from yum repo
   replace: >
     dest=/etc/yum.repos.d/nodesource-el.repo
