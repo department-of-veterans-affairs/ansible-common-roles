@@ -29,7 +29,7 @@
   when: skip_update is undefined
 
 - name: configure yum-cron to automatically apply updates.
-  lineinfile: dest=/etc/yum/yum-cron.conf regexp=apply_updates line='apply_updates = yes'
+  lineinfile: create=True dest=/etc/yum/yum-cron.conf regexp=apply_updates line='apply_updates = yes'
 
 - name: start yum-cron
   service:
