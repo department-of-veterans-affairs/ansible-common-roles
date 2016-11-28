@@ -10,6 +10,13 @@
     name: "nodejs-{{ nodejs_version }}"
   when: nodejs_preinstalled == false
 
+- name: disable nodejs from yum repo
+  replace: >
+    dest=/etc/yum.repos.d/nodesource-el.repo
+    regexp='enabled=1'
+    replace='enabled=0'
+    backup=yes
+
 - name: install exact npm version
   shell: npm i -g npm@{{ npm_version }}
   when: nodejs_preinstalled == false
