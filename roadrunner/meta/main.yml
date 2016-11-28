@@ -5,6 +5,14 @@ dependencies:
   - role: git
     dest: "{{ app_src }}"
 
+  - role: nodejs-version-lookup
+
+  - role: nodejs-existence-check
+
+  - role: nodejs
+
+  - role: nodejs-build
+
   - role: ruby-version-lookup
 
   - role: ruby-existence-check
