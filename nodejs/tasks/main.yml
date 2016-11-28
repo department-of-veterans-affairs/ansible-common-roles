@@ -1,26 +1,21 @@
-# Reads the nvmrc file to determine the preferred nodejs
-# version by the application.
 #
-# Side effect:
-#   nodejs_version set to the version string used by the application.
+# This script runs a series of node.js related tasks.
 #
-- name: read node version
-  shell: cat {{app_src}}/.nvmrc
-  register: nodejs_version_output
-
-- set_fact:
-    nodejs_version: "{{ nodejs_version_output.stdout }}"
-  when: nodejs_version_output.stderr == ""
-
-
-# Simple script that runs "node --version" and look for the version
-# of Nodejs that we are targeting (defined as a fact nodejs_version).
+#  - Look up the node.js version specified by the application
+#  - Install the required node.js version.
+#  - Install the required npm version
+#  - Run `npm install`
 #
 # Input vars:
-#   nodejs_version
+#   nodejs_version (the version string required by the application)
+#   npm_version (the desired NPM version)
 #
 # Side effect:
 #   nodejs_preinstalled set to true if the desired nodejs is already installed, false otherwise
+#
+
+# Runs "node --version" and look for the version of Nodejs that we are
+# targeting (defined as a fact nodejs_version).
 #
 - name : check if nodejs is installed
   shell: "node --version  | cut -c 2-"
@@ -65,10 +60,5 @@
 # babel precompiler.
 - name: npm install
   shell: npm install --production --no-optional
-  args:
-    chdir: "{{app_src}}/client"
-
-- name: webpack build
-  shell: npm run build:production
   args:
     chdir: "{{app_src}}/client"

@@ -5,8 +5,10 @@ dependencies:
   - role: git
     dest: "{{ app_src }}"
 
+  - role: nodejs-version-lookup
+
   - role: nodejs
-    when: require_nodejs == true
+    when: nodejs_version is defined
 
   - role: ruby-version-lookup
 
