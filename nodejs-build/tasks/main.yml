@@ -4,8 +4,3 @@
   shell: npm install --production --no-optional
   args:
     chdir: "{{app_src}}/client"
-
-- name: webpack build
-  shell: npm run build:production
-  args:
-    chdir: "{{app_src}}/client"
