@@ -1,4 +1,7 @@
 ---
+- name: install git
+  yum: name=git state=present
+
 - name: copy private key
   copy: content="{{ git.key_contents }}" dest=/tmp/git.pem mode=0600
   when: git.key_contents is defined
