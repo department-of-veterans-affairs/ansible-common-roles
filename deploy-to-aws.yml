@@ -9,7 +9,7 @@
 # 5. Update the specified auto-scaling group to use the newly created launch configuration
 # 6. Replace running instances one-at-a-time
 #
-# Requires aws_config with the following structure:
+# Requires file vars/aws-config.yml that defines aws_config with the following structure:
 # aws_config: {
 #   env_name: {
 #     keypair: "...",
@@ -32,6 +32,8 @@
 #       }
 #   }
 # }
+#
+# Requires file roles/ansible_role_name/vars/vault_{deploy_env}.yml that defines environment-specific vars
 ##
 - name: launch AMI instance
   hosts: localhost
@@ -61,8 +63,9 @@
   hosts: tmp_ami_group
   vars_files:
     - vars/aws-config.yml
-    - roles/{{ app_config[app_name].ansible_role_name }}/vars/vault_common.yml
-    - roles/{{ app_config[app_name].ansible_role_name }}/vars/vault_{{ deploy_env }}.yml
+
+    # specified in app_config or defaults to roles/{ansible_role_name}/vars/vault_{deploy_env}.yml
+    - "{{ app_config[app_name][deploy_env].vars_file | default('roles/' + app_config[app_name].ansible_role_name  + '/vars/vault_' + deploy_env + '.yml') }}"
 
   roles:
     - role: "{{ app_config[app_name].ansible_role_name }}"
