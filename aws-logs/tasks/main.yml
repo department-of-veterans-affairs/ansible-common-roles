@@ -4,8 +4,11 @@
 - name: enable awslogs on boot
   service: name=awslogs enabled=true
 
-- name: configure awslogs
+- name: configure aws (region, cwlogs)
   template: src=templates/awscli.conf dest=/etc/awslogs/awscli.conf mode=go=r,u=rw
 
-- name: configure watched log files
+- name: configure awslogs general section
   template: src=templates/awslogs.conf dest=/etc/awslogs/awslogs.conf mode=go=r,u=rw
+
+- name: configure application log streams
+  template: src=templates/app-logs.conf dest=/var/awslogs/etc/config/{{ log_group_name }}.conf mode=go=r,u=rw
