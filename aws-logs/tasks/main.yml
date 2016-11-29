@@ -16,8 +16,16 @@
     dest: /etc/awslogs/awslogs.conf
     mode: go=r,u=rw
 
+- name: create dir
+  file:
+    path: /var/awslogs/etc/config/
+    state: directory
+    recurse: yes
+  when: watched_logs is defined and watch_logs|length > 0
+
 - name: configure application log streams
   template:
     src: templates/app-logs.conf
     dest: /var/awslogs/etc/config/{{ log_group_name }}.conf
     mode: go=r,u=rw
+  when: watched_logs is defined and watch_logs|length > 0
