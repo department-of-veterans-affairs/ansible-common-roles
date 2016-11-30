@@ -1,3 +1,5 @@
 ---
 watched_logs:
   - path: /var/log/messages
+
+region: us-west-1
