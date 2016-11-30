@@ -3,6 +3,12 @@
     url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
     dest: /tmp/awslogs-agent-setup.py
 
+- name: write config file
+  template:
+    src: templates/awslogs.conf
+    dest: /etc/awslogs/awslogs.conf
+    mode: go=r,u=rw
+
 - name: install
   shell: "/usr/bin/python /tmp/awslogs-agent-setup.py --non-interactive --region {{ region }} --configfile /etc/awslogs/awslogs.conf"
 
@@ -13,12 +19,6 @@
   template:
     src: templates/awscli.conf
     dest: /etc/awslogs/awscli.conf
-    mode: go=r,u=rw
-
-- name: configure awslogs general section
-  template:
-    src: templates/awslogs.conf
-    dest: /etc/awslogs/awslogs.conf
     mode: go=r,u=rw
 
 - name: create dir
