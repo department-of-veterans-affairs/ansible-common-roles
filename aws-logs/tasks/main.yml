@@ -3,30 +3,17 @@
     url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
     dest: /tmp/awslogs-agent-setup.py
 
-- name: write config file
+- name: write config file for installation
   template:
     src: templates/awslogs.conf
-    dest: /etc/awslogs/awslogs.conf
+    dest: /tmp/awslogs.conf
     mode: go=r,u=rw
 
 - name: install
-  shell: "/usr/bin/python /tmp/awslogs-agent-setup.py --non-interactive --region {{ region }} --configfile /etc/awslogs/awslogs.conf"
+  shell: "/usr/bin/python /tmp/awslogs-agent-setup.py --non-interactive --region {{ region }} --configfile /tmp/awslogs.conf"
 
 - name: enable awslogs on boot
   service: name=awslogs enabled=true
-
-- name: configure aws (region, cwlogs)
-  template:
-    src: templates/awscli.conf
-    dest: /etc/awslogs/awscli.conf
-    mode: go=r,u=rw
-
-- name: create dir
-  file:
-    path: /var/awslogs/etc/config/
-    state: directory
-    recurse: yes
-  when: watched_logs is defined and watched_logs|length > 0
 
 - name: configure application log streams
   template:
