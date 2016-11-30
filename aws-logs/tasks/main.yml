@@ -1,5 +1,10 @@
-- name: install awslogs agent
-  yum: name=awslogs state=latest
+- name: download awslogs agent installer
+  get_url:
+    url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
+    dest: /tmp/awslogs-agent-setup.py
+
+- name: install
+  shell: "/usr/bin/python /tmp/awslogs-agent-setup.py --non-interactive --region {{ region }} --configfile /etc/awslogs/awslogs.conf"
 
 - name: enable awslogs on boot
   service: name=awslogs enabled=true
