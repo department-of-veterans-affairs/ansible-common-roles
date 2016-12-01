@@ -1,3 +1,5 @@
+log_group_name: "{{ name }}"
+
 default_watched_logs:
   - path: /var/log/messages
     datetime_format: "%b %d %H:%M:%S"

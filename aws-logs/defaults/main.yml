@@ -2,4 +2,4 @@
 watched_logs:
   - path: /var/log/messages
 
-log_group_name: "{{ name }}"
+region: us-west-1

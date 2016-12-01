@@ -1,4 +1,5 @@
 ---
+allow_duplicates: True
 galaxy_info:
   author: Nick Hammond
   description: Role to configure logrotate scripts

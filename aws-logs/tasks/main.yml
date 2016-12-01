@@ -1,11 +1,23 @@
-- name: install awslogs agent
-  yum: name=awslogs state=latest
+- name: download awslogs agent installer
+  get_url:
+    url: https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
+    dest: /tmp/awslogs-agent-setup.py
+
+- name: write config file for installation
+  template:
+    src: templates/awslogs.conf
+    dest: /tmp/awslogs.conf
+    mode: go=r,u=rw
+
+- name: install
+  shell: "/usr/bin/python /tmp/awslogs-agent-setup.py --non-interactive --region {{ region }} --configfile /tmp/awslogs.conf"
 
 - name: enable awslogs on boot
   service: name=awslogs enabled=true
 
-- name: configure awslogs
-  template: src=templates/awscli.conf dest=/etc/awslogs/awscli.conf mode=go=r,u=rw
-
-- name: configure watched log files
-  template: src=templates/awslogs.conf dest=/etc/awslogs/awslogs.conf mode=go=r,u=rw
+- name: configure application log streams
+  template:
+    src: templates/app-logs.conf
+    dest: /var/awslogs/etc/config/{{ log_group_name }}.conf
+    mode: go=r,u=rw
+  when: watched_logs is defined and watched_logs|length > 0
