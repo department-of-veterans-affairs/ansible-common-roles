@@ -1,5 +1,0 @@
----
-allow_duplicates: True
-dependencies:
-  - role: aws-logs
-    watched_logs: "{{ default_watched_logs | union(additional_watched_logs | default([])) }}"
