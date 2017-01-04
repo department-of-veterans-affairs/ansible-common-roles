@@ -56,6 +56,9 @@
   shell: npm i -g npm@{{ npm_version }}
   when: nodejs_preinstalled == false
 
+- name: set npm registry
+  shell: npm set registry {{ npm_registry_url }}
+
 # Run NPM install to download all the NPM packages and webpack to run the
 # babel precompiler.
 - name: npm install
