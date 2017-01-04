@@ -1,3 +1,13 @@
 # fallback placeholder. This is determined by the corresponding npm used by
 # the specific version of nodejs.
 npm_version: 2.14.4
+
+# This is an instance we run within the VPC to cache
+# # npm modules using sinopia
+npm_server: {
+  dev: "http://172.30.67.236:3000",
+  uat: "http://172.30.67.236:3000",
+  prod: "https://registry.npmjs.org/"
+}
+
+npm_registry_url: "{{ npm_server[deploy_env] }}"
