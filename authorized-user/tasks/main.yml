@@ -9,6 +9,10 @@
   authorized_key: user={{ user }} key={{ public_key }}
   when: public_key is defined
 
-- name: add multiple authorized ssh keys (optional)
+- name: add multiple authorized ssh keys via glob (optional)
   authorized_key: user={{ user }} key={{ lookup('file', item) }}
   with_fileglob: "{{ public_keys_glob | default([]) }}"
+
+- name: add multiple authorized ssh keys via list public keys (optional)
+  authorized_key: user={{ user }} key={{ item }}
+  with_items: "{{ public_keys | default([]) }}"

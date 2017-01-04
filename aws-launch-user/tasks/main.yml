@@ -10,11 +10,19 @@
   local_action: command mktemp /tmp/launch-user-ssh-keys.XXXXXXXX
   register: tmp_ssh_keys
 
-- name: Populate concatenated keys file
+- name: Populate concatenated keys file from directory contents
   local_action:
     module: assemble
     src: "{{ keys_directory }}"
     dest: "{{ tmp_ssh_keys.stdout }}"
+  when: keys_directory is defined
+
+- name: Populate concatenated keys file from variable contents
+  local_action:
+    module: copy
+    content: "{{ keys_contents }}"
+    dest: "{{ tmp_ssh_keys.stdout }}"
+  when: keys_contents is defined
 
 - name: Export keys variable
   set_fact:
