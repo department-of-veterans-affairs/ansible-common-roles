@@ -6,13 +6,11 @@
   when: sudoer
 
 - name: add a single authorized ssh key (optional)
-  authorized_key: user={{ user }} key={{ public_key }}
+  authorized_key: user={{ user }} key={{ public_key }} exclusive=True
   when: public_key is defined
 
-- name: add multiple authorized ssh keys via glob (optional)
-  authorized_key: user={{ user }} key={{ lookup('file', item) }}
-  with_fileglob: "{{ public_keys_glob | default([]) }}"
-
 - name: add multiple authorized ssh keys via list public keys (optional)
-  authorized_key: user={{ user }} key={{ item }}
-  with_items: "{{ public_keys | default([]) }}"
+  copy:
+    content: "{{ public_keys | join('\n') }}"
+    dest: /home/{{ user }}/.ssh/authorized_keys
+  when: public_keys is defined
