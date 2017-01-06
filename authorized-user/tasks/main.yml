@@ -4,6 +4,11 @@
 - name: make {{ user }} sudo
   template: src=sudoers dest=/etc/sudoers.d/{{ user }} owner=root group=root mode=0440 validate='visudo -cf %s'
   when: sudoer
+  
+- name: clear any previous authorized keys
+  file:
+    path: /home/{{ user }}/.ssh/authorized_keys
+    state: absent
 
 - name: add a single authorized ssh key (optional)
   authorized_key: user={{ user }} key={{ public_key }}
