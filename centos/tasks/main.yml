@@ -42,7 +42,7 @@
 - name: Change ssh ciphers
   lineinfile: dest=/etc/ssh/sshd_config
               regexp="^Ciphers\s"
-              line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,arcfour"
+              line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
               state=present
 
 - name: Change ssh MACs
