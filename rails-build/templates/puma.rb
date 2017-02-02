@@ -6,8 +6,6 @@ pidfile '{{app_src}}/tmp/pids/puma.pid'
 
 state_path '{{app_src}}/tmp/pids/puma.state'
 
-stdout_redirect '{{app_src}}/log/{{ name }}.out', '{{app_src}}/log/{{ name }}.out'
-
 threads {{min_threads}}, {{max_threads}}
 
 {% if num_workers > 1 %}
