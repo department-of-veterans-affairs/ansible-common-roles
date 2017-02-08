@@ -3,6 +3,16 @@
   template: src=templates/env.sh dest={{app_home}}/{{name}}_env.sh mode="ug=rw,o=r"
   when: env_file is undefined or environment_variables is defined
 
+# Remove all defaults env that ends with ="". If the environment string is 
+# empty, it should be removed to avoid confusing in the app layer.
+- name: sanitize {{ name }} environment file
+  shell: grep -v "=\"\"$" {{name}}_env.sh  > {{name}}_env.sh.tmp && cat {{name}}_env.sh.tmp > {{name}}_env.sh && rm {{name}}_env.sh.tmp 
+  args:
+    chdir: {{app_home}}
+
+  template: src=templates/env.sh dest={{app_home}}/{{name}}_env.sh mode="ug=rw,o=r"
+  when: env_file is undefined or environment_variables is defined
+
 - name: define {{ name }} env_file if not specified
   set_fact:
     env_file: "{{ app_home }}/{{ name }}_env.sh"
