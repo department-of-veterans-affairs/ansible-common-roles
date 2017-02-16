@@ -6,6 +6,10 @@ instance_type: t2.medium
 instance_name: "{{ app_group }}-{{ app_project }}-{{ app_name }}_ami-{{ timestamp }}"
 
 default_tags:
-    Name: "{{ instance_name }}"
+  Name: "{{ instance_name }}"
+  app_group: "{{ app_group }}"
+  app_project: "{{ app_project }}"
+  app_name: "{{ app_name }}"
+  type: "ami"
 
 instance_tags: {}
