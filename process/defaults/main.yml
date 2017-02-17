@@ -1,4 +1,7 @@
 ---
 # TODO(awong): This is misnamed as it redirects both stdout and stderr.
 stdout_redirect: "{{ app_home }}/{{ name }}.out"
+
+# Zero wait time (sec) by default.
+wait_time_before_start: "0"
 ...
