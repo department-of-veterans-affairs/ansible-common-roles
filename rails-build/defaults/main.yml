@@ -18,3 +18,7 @@ bundle_specified_envs:
   - development
   - staging
   - production
+
+# Default version to 1.14.4
+# See https://github.com/department-of-veterans-affairs/appeals-deployment/issues/472
+bundler_version: "1.14.4"

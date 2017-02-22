@@ -1,5 +1,5 @@
 - name: install bundle
-  shell: "{{rbenv_root}}/shims/gem install bundler"
+  shell: "{{rbenv_root}}/shims/gem install bundler -v {{ bundler_version }}"
   args:
     chdir: "{{app_src}}"
   environment:
